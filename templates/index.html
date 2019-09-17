@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <!-- favicons -->
+    <link rel="icon" href="img/logo_only.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css">
+    <!-- Material design icons CSS -->
+    <link rel="stylesheet" href="css/lib/materializeicon/material-icons.css">
+    <!-- app CSS -->
+    <link id="theme" rel="stylesheet" href="css/blueheadersidebar.css" type="text/css">
+    <link rel="stylesheet" href="css/separate/pages/others.min.css">
+    <link rel="stylesheet" href="css/lib/font-awesome/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.css">
+    <script src="js/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="css/element/index.css">
+    <!-- 引入组件库 -->
+    <script src="js/element/index.js"></script>
+    <title>面向遥感影像的海岛边界识别系统</title>
+    <style>
+    #statistics-panel {
+        width: 280px;
+        height: 450px;
+        background-color: rgba(255, 255, 255, 0.7);
+        position: absolute;
+        top: 60px;
+        right: 0px;
+        border-left: 1px solid #3c99f5;
+        border-bottom: 1px solid #3c99f5;
+        border-radius: 0px 0px 0px 10px;
+        padding: 20px;
+        transition: right 1s
+    }
+
+    #statistics-panel #panel_btn {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        left: -60px;
+        top: 10px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-left: 1px solid #3c99f5;
+        border-bottom: 1px solid #3c99f5;
+        border-top: 1px solid #3c99f5;
+        border-radius: 5px 0px 0px 5px;
+        color: #3c99f5;
+        font-size: 36px;
+        padding-left: 16px;
+        padding-top: 18px;
+    }
+
+
+
+
+    .panel_txt {
+        font-size: 16px;
+        /*font-weight: bold;*/
+    }
+
+    .panel_num {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .blue_num {
+        color: #3c99f5;
+    }
+
+    .red_num {
+        color: #e05766;
+    }
+
+    .green_num {
+        color: #48cc92;
+    }
+
+    .black_num {
+        color: black;
+    }
+
+    #map {
+
+        width: 100%;
+        height: 100%;
+        /*min-height:400px;*/
+
+    }
+
+    .more {
+        float: right;
+    }
+
+    .countries {
+        background-image: url("/img/search_icon/icon_search.png");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+    }
+
+    #forecast {
+        width: 280px;
+        height: 250px;
+        position: absolute;
+        top: 510px;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-left: 1px solid #3c99f5;
+        border-bottom: 1px solid #3c99f5;
+        border-top: 1px solid #3c99f5;
+        border-radius: 5px 0px 0px 5px;
+        color: #3c99f5;
+        font-size: 14px;
+        padding-left: 5px;
+        transition: right 1s
+    }
+
+    #forecast #telescopic {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        left: -60px;
+        top: 10px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-left: 1px solid #3c99f5;
+        border-bottom: 1px solid #3c99f5;
+        border-top: 1px solid #3c99f5;
+        border-radius: 5px 0px 0px 5px;
+        color: #3c99f5;
+        font-size: 36px;
+        padding-left: 16px;
+        padding-top: 18px;
+    }
+
+    #location {
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .weather {
+        /*margin-top: 10px;*/
+        height: 60px;
+        width: 60px;
+    }
+
+    .weather-des {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .temperature {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .weather-forecast {
+        height: 40px;
+        width: 40px;
+    }
+
+    .date {
+        font-weight: bold;
+    }
+
+    #map_btn_vr_switcher {
+        width: 80px;
+        height: 80px;
+        background-image: url(./img/map_btn_r.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        position: relative;
+        left: 10px;
+        bottom: 140px;
+        color: white;
+    }
+
+    #mouse-position {
+        width: 160px;
+        height: 30px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid #3c99f5;
+        border-radius: 5px;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        /*color:white;*/
+    }
+
+    #layer_control {
+        width: 140px;
+        height: 100px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid #3c99f5;
+        border-radius: 5px;
+        position: relative;
+        left: 10px;
+        bottom: 340px;
+        /*color:white;*/
+    }
+
+    #layer_control ul {
+        padding: 10px;
+    }
+
+    #layer_control li {
+        list-style-type: none;
+    }
+
+    .maptalks-layer-switcher {
+        margin-bottom: 40px;
+    }
+    </style>
+</head>
+
+<body class="fixed-header sidebar-right-close">
+    <!--<div style="width: 100%;height:1080px;position: absolute;background:rgba(181, 190, 235, 0.9)"></div>-->
+    <div class="wrapper">
+        <!-- main header -->
+        <header class="main-header">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-auto pl-0">
+                        <button class="btn blue btn-icon" id="left-menu"><i class="material-icons white">widgets</i></button>
+                        <a href="index.html"><img src="img/logo_only.png" alt="" style="width: 45px;height: 45px;margin-left: 10px"></a>
+                        <a class="logo"><span style="color: white;font-family: 黑体;font-size: 30px;">分散式生活污水处理设施智慧监控运行管理平台</span></a>
+                    </div>
+                    <div class="col text-center p-xs-0">
+                    </div>
+                    <div class="dropdown text-hide-lg d-inline-block">
+                        <a class="btn header-color-secondary btn-icon dropdown-toggle caret-none" href="#" role="button" id="dropdownnotification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="material-icons">notifications_none</i>
+                                <span class="status-dot pink-gradient"></span>
+                            </a>
+                        <div class="dropdown-menu notification-dropdown" aria-labelledby="dropdownnotification">
+                            <a href="#" class="media  pink-gradient-active new">
+                                    <figure class="avatar avatar-40">
+                                        <img src="img/avatar-sign.png" alt="Generic placeholder image">
+                                    </figure>
+                                    <div class="media-body">
+                                        <h5 class="mt-0">警告</h5>
+                                        <p>嘉兴某监测点异常！</p>
+                                    </div>
+                                </a>
+                        </div>
+                    </div>
+                    <div class="dropdown d-inline-block">
+                        <a class="btn header-color-secondary dropdown-toggle username" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <figure class="userpic"><img src="img/avatar-sign.png" alt=""></figure>
+                                <h5 class="text-hide-xs">
+                                    <small class="header-color-secondary">欢迎,</small>
+                                    <span class="header-color-primary" id="welcome"></span>
+                                </h5>
+                            </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-dropdown" aria-labelledby="dropdownMenuLink">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <a href="personal_info.html">
+                                            <figure class="avatar avatar-120 mx-auto my-3">
+                                                <img src="img/avatar-sign.png" alt="">
+                                            </figure>
+                                            <h5 class="card-title mb-2 header-color-primary" id="user"></h5>
+                                            <h6 class="card-subtitle mb-3 header-color-secondary">上海市</h6>
+                                        </a>
+                                    <p class="card-text">登录成功！！！</p>
+                                    <!--<button class="btn btn-sm pink-gradient border-0 mb-3">Edit</button>-->
+                                </div>
+                            </div>
+                            <a class="dropdown-item pink-gradient-active" href="./personal_info.html" id="open-right-sidebar">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            设置
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <div class="header-color-secondary ml-2"><i class="material-icons vm">settings</i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            <div class="dropdown-divider m-0"></div>
+                            <!--<a class="dropdown-item pink-gradient-active" href="javascript:void(0);">-->
+                            <!--<div class="row align-items-center">-->
+                            <!--<div class="col">-->
+                            <!--5458 <small class="header-color-secondary font-italic">Points Collected</small>-->
+                            <!--</div>-->
+                            <!--<div class="col-auto">-->
+                            <!--<i class="header-color-secondary material-icons vm">local_play</i>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</a>-->
+                            <div class="dropdown-divider m-0"></div>
+                            <a class="dropdown-item pink-gradient-active" href="logout">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            注销
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <div class="text-danger ml-2"><i class="material-icons vm">exit_to_app</i></div>
+                                        </div>
+                                    </div>
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- main header ends -->
+        <!-- sidebar left -->
+        <div class="sidebar sidebar-left" style="background:url('img/login_left.jpg')">
+            <div class="sidebar sidebar-left" style="background: rgba(35,130,224,0.9)">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link dropdwown-toggle"><i class="material-icons icon">insert_chart_outlined</i> <span>首页</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link dropdwown-toggle"><i class="material-icons icon">filter_none</i> <span>基础信息</span><i class="material-icons icon arrow">expand_more</i></a>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="./device_list.html" class="nav-link"><i class="material-icons icon">1</i> <span>设施基础信息</span></a>
+                                <a href="device_image_document.html" class="nav-link"><i class="material-icons icon"></i> <span>设施图纸档案</span></a>
+                                <a href="./operation_maintenance_file.html" class="nav-link"><i class="material-icons icon"></i> <span>运维企业档案</span></a>
+                                <a href="./water_environment_info.html" class="nav-link"><i class="material-icons icon"></i> <span>水环境信息</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link dropdwown-toggle"><i class="material-icons icon">featured_play_list</i> <span>智慧监控</span><i class="material-icons icon arrow">expand_more</i></a>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="./device_monitoring.html" class="nav-link"><i class="material-icons icon"></i> <span>实时监控</span></a>                                 <a href="./multi_parameter_water_monitoring.html" class="nav-link"><i class="material-icons icon"></i> <span>在线监测</span></a>
+                                <a href="./operational_parameter_analysis.html" class="nav-link"><i class="material-icons icon"></i> <span>运行统计</span></a>
+                                <a href="./anomaly_identification.html" class="nav-link"><i class="material-icons icon"></i> <span>智能诊断与控制</span></a>
+                                <a href="./facility_monitoring_report.html" class="nav-link"><i class="material-icons icon"></i> <span>设施运行报告</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link dropdwown-toggle"><i class="material-icons icon">devices</i> <span>标准化运维</span><i class="material-icons icon arrow">expand_more</i></a>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="./alarm_management.html" class="nav-link"><i class="material-icons icon"></i> <span>告警管理</span></a>
+                                <a href="work_order_management.html" class="nav-link"><i class="material-icons icon"></i> <span>工单管理</span></a>
+                                <a href="./knowledge_base_management.html" class="nav-link"><i class="material-icons icon"></i> <span>知识库管理</span></a>
+                                <a href="./operation_person_management.html" class="nav-link"><i class="material-icons icon"></i> <span>运维人员管理</span></a>
+                                <a href="./water_quality_testing.html" class="nav-link"><i class="material-icons icon"></i> <span>水质自检</span></a>
+                                <a href="./operation_maintenance_cost_analysis.html" class="nav-link"><i class="material-icons icon"></i> <span>运维成本分析</span></a>
+                                <a href="./operation_maintenance_assessment_record.html" class="nav-link"><i class="material-icons icon"></i> <span>运维考核记录</span></a>
+                                <a href="./operation_maintenance_report.html" class="nav-link"><i class="material-icons icon"></i> <span>运维报告</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link dropdwown-toggle"><i class="material-icons icon">star_half</i> <span>运维监督</span><i class="material-icons icon arrow">expand_more</i></a>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="./inspection_supervision.html" class="nav-link"><i class="material-icons icon"></i> <span>巡查监督</span></a>
+                                <a href="./water_quality_supervision.html" class="nav-link"><i class="material-icons icon"></i> <span>水质监督</span></a>
+                                <a href="./fund_management.html" class="nav-link"><i class="material-icons icon"></i> <span>资金管理</span></a>
+                                <a href="./training_activities.html" class="nav-link"><i class="material-icons icon"></i> <span>培训管理</span></a>
+                                <a href="./report_management.html" class="nav-link"><i class="material-icons icon"></i> <span>报表管理</span></a>
+                                <a href="./assessment_report.html" class="nav-link"><i class="material-icons icon"></i> <span>动态考核管理</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="document_management.html" class="nav-link"><i class="material-icons icon">event_note</i> <span>资料库</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link dropdwown-toggle"><i class="material-icons icon">grid_on</i> <span>专题分析</span><i class="material-icons icon arrow">expand_more</i></a>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="./basic_parameter_analysis.html" class="nav-link"><i class="material-icons icon"></i> <span>设施基础信息分析</span></a>
+                                <a href="./facility_operation_analysis.html" class="nav-link"><i class="material-icons icon"></i> <span>设施运行多维分析</span></a>
+                                <a href="./water_image_analysis.html" class="nav-link"><i class="material-icons icon"></i> <span>水环境断面影响分析</span></a>
+                                <a href="./intelligence_monitoring_analysis.html" class="nav-link"><i class="material-icons icon"></i> <span>示范点数据分析</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./public_participation.html" class="nav-link dropdwown-toggle"><i class="material-icons icon">insert_emoticon</i> <span>公众参与</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link dropdwown-toggle"><i class="material-icons icon">domain</i> <span>系统管理</span><i class="material-icons icon arrow">expand_more</i></a>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a href="management_user.html" class="nav-link"><i class="material-icons icon"></i> <span>用户管理</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="management_role.html" class="nav-link"><i class="material-icons icon"></i> <span>权限管理</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./communication_management.html" class="nav-link"><i class="material-icons icon"></i> <span>通讯管理</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./keyword_filter.html" class="nav-link"><i class="material-icons icon"></i> <span>关键字过滤</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- sidebar left ends -->
+        <div class="page-content">
+            <div class="container-fluid" style="padding:0px;margin:0px;">
+                <div class="box-typical box-typical-full-height" id="map-parent">
+                    <div id="map"></div>
+                </div>
+                <!--.container-fluid-->
+                <div class="eac-square countries" style="position: absolute; top:80px;left: 280px;" id="app" v-cloak>
+                    <el-autocomplete class="countries" v-model="state" :fetch-suggestions="querySearch" placeholder="请输入内容" :trigger-on-focus="false" @select="handleSelect"></el-autocomplete>
+                </div>
+                <div id="statistics-panel">
+                    <div id="panel_btn">&#9655;</div>
+                    <p class="panel_txt">建设完成<span class="panel_num blue_num" id="jianshewancheng">0</span>座站点</p>
+                    <p class="panel_txt">在线运行<span class="panel_num green_num" id="zaixianyunxing">0</span>座站点</p>
+                    <p class="panel_txt">设施在线率<span class="panel_num red_num" id="zaixianyunxinglv">0</span><span class="panel_num red_num">%</span></p>
+                    <p class="panel_txt">水质达标<span class="panel_num green_num" id="shuizhidabiao">0</span>座站点</p>
+                    <p></p>
+                    <p class="panel_txt">系统正常运行<span class="panel_num blue_num" id="xitongyunxing">0</span>天</p>
+                    <p class="panel_txt">实际处理水量<span class="panel_num blue_num" id="shijichulishuiliang">0</span>吨</p>
+                    <p class="panel_txt">设计处理水量<span class="panel_num blue_num" id="shejichulishuiliang">0</span>吨</p>
+                    <p class="panel_txt">昨日处理水量<span class="panel_num blue_num" id="zuorichushuiliang">0</span>吨</p>
+                    <p class="panel_txt">昨日总耗电<span class="panel_num blue_num" id="zuorizonghaodian">0</span>度</p>
+                    <p class="panel_txt">处理成本<span class="panel_num black_num">0.4</span>kWh/吨</p>
+                </div>
+                <div id="forecast">
+                    <div id="telescopic">&#9655;</div>
+                    <!--<iframe width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://www.tianqi.com/index.php?c=code&;id=12&;icon=1&;py=qingdao&;num=5"></iframe>-->
+                    <section id="location">
+                        <span>嘉兴市</span>
+                    </section>
+                    <section style="text-align: center">
+                        <img src="img/loading_icon/loading2.gif" id="today_img" alt="weather icon" class="weather"><br>
+                        <p class="weather-des" id="today_weather"></p>
+                        <span class="temperature" id="today_temperature"></span>
+                    </section>
+                    <section style="margin-top: 10px">
+                        <div style="text-align: center;float: right;padding-right: 28px">
+                            <img src="img/loading_icon/loading2.gif" id="acquired_img" class="weather-forecast"><br>
+                            <span class="date" id="acquired_weather"></span><br>
+                            <span class="date" id="acquired_temperature"></span>
+                        </div>
+                        <div style="text-align: center">
+                            <img src="img/loading_icon/loading2.gif" id="tomorrow_img" class="weather-forecast"><br>
+                            <span class="date" id="tomorrow_weather"></span><br>
+                            <span class="date" id="tomorrow_temperature"></span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!--.page-content-->
+    </div>
+    <script src="js/ie/html5shiv.min.js"></script>
+    <script src="js/ie/respond.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/maptalks/dist/maptalks.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/lib/bootstrap-4.1.3/js/bootstrap.min.js"></script>
+    <script src="js/page/login.js"></script>
+    <script src="js/lib/tether/tether.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+    <script src="vendor/countup/countUp.min.js"></script>
+    <!--<script src="js/app.js"></script>-->
+    <script>
+    $(function() {
+        var panel_is_opened = true;
+        $("#panel_btn").click(function() {
+            console.log("clicked", panel_is_opened);
+            if (panel_is_opened) {
+                panel_is_opened = !panel_is_opened;
+                $("#panel_btn").html("&#9664;");
+                $("#statistics-panel").css("right", "-250px")
+            } else {
+                panel_is_opened = !panel_is_opened;
+                $("#panel_btn").html("&#9655;");
+                $("#statistics-panel").css("right", "0px")
+            }
+        })
+    });
+    $(function() {
+        var panel_is_opened = true;
+        $("#telescopic").click(function() {
+            console.log("clicked", panel_is_opened);
+            if (panel_is_opened) {
+                panel_is_opened = !panel_is_opened;
+                $("#telescopic").html("&#9664;");
+                $("#forecast").css("right", "-250px")
+            } else {
+                panel_is_opened = !panel_is_opened;
+                $("#telescopic").html("&#9655;");
+                $("#forecast").css("right", "0px")
+            }
+        })
+    });
+    // 天气预报
+    $(function getWeather() {
+        let url = "/api/weatherForecast";
+        $.ajax({
+            url: url,
+            type: "get",
+            success: function(result) {
+                console.log("天气", result);
+                let today = result.today_date + "&nbsp;&nbsp;" + result.today_weather;
+                let today_temperature = result.today_temperature_high;
+                let tomorrow = result.tomorrow_date.substring(5, result.tomorrow_date.length) + "&nbsp;" + result.tomorrow_weather;
+                let tomorrow_temperature = result.tomorrow_temperature_high;
+                let acquired = result.acquired_date.substring(5, result.acquired_date.length) + "&nbsp;" + result.acquired_weather;
+                let acquired_temperature = result.acquired_temperature_high;
+                let todayImage = findWeatherIcon(result.today_weather);
+                let tomorrowImage = findWeatherIcon(result.tomorrow_weather);
+                let acquiredImage = findWeatherIcon(result.acquired_weather);
+                $("#today_img").attr("src", todayImage);
+                $("#tomorrow_img").attr("src", tomorrowImage);
+                $("#acquired_img").attr("src", acquiredImage);
+                $("#today_weather").html(today);
+                $("#today_temperature").html(today_temperature);
+                $("#tomorrow_weather").html(tomorrow);
+                $("#tomorrow_temperature").html(tomorrow_temperature);
+                $("#acquired_weather").html(acquired);
+                $("#acquired_temperature").html(acquired_temperature);
+            }
+        })
+    });
+    // 实时更新天气图标
+    function findWeatherIcon(type) {
+        console.log(typeof type);
+        let srcUrl = "";
+        if (type !== null && type !== "") {
+            if (type.indexOf("晴") !== -1) {
+                srcUrl = "img/weather_icon/0.png"
+            } else if (type.indexOf("雪") !== -1) {
+                srcUrl = "img/weather_icon/23.png"
+            } else if (type.indexOf("雨") !== -1) {
+                srcUrl = "img/weather_icon/11.png"
+            } else if (type.indexOf("阴") !== -1) {
+                srcUrl = "img/weather_icon/7.png"
+            } else {
+                srcUrl = "img/weather_icon/5.png"
+            }
+        }
+        return srcUrl;
+    }
+
+    $(function () {
+        $.ajax({
+            url:'/api/indexData',
+            type: 'get',
+            success:function (data) {
+                console.log('ddd',data)
+                var numAnim = new CountUp("jianshewancheng", 0, data[0]);
+                numAnim.start();
+                var numAnim2 = new CountUp("zaixianyunxing", 0, data[1]);
+                numAnim2.start();
+                //var numAnim3 = new CountUp("zaixianyunxinglv", 0.0, data[2]);
+                var numAnim3 = new CountUp("zaixianyunxinglv", 0, 100);
+                numAnim3.start();
+                var numAnim4 = new CountUp("shuizhidabiao", 0, 928);
+                numAnim4.start();
+                var numAnim7 = new CountUp("xitongyunxing", 0, data[4]);
+                numAnim7.start();
+                var numAnim5 = new CountUp("zuorichushuiliang", 0, 4523);
+                numAnim5.start();
+                var numAnim6 = new CountUp("zuorizonghaodian", 0, 35410);
+                numAnim6.start();
+                var numAnim11 = new CountUp("zuorizonghaodian", 0, 14164);
+                numAnim11.start();
+                var numAnim9 = new CountUp("shijichulishuiliang", 0, 16215012);
+                numAnim9.start();
+                var numAnim8 = new CountUp("zuorichushuiliang", 0, 35410);
+                numAnim8.start();
+                var numAnim10 = new CountUp("shejichulishuiliang", 0, 42883);
+                numAnim10.start();
+            }
+        })
+
+
+
+    });
+    </script>
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            restaurants: [],
+            dataList: [],
+            state: ''
+        },
+        methods: {
+            querySearch(queryString, cb) {
+                let restaurants = this.restaurants;
+                let results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (restaurant) => {
+                    return (restaurant.value?restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0:false);
+                };
+            },
+            handleSelect(item) {
+                console.log(item.code);
+                if (item.code) {
+                    layer = map.getLayer('污水处理设施');
+                    eleMarker = layer.getGeometryById(item.code);
+                    //map.setZoom(14);
+                    //map.panTo(eleMarker.getCoordinates());
+                    map.setCenterAndZoom(eleMarker.getCoordinates(), 14);
+                    eleMarker.openInfoWindow();
+                }
+            }
+        },
+        mounted() {
+            let _self = this;
+            $.get('/api/searchApi').then(function(data) {
+                _self.restaurants = data;
+            });
+        }
+    });
+    $("#map").height($("body").height() - 60);
+    sheshi_state = ['建设', '运维', '大修', '重建', '报废', '改建', '问题', '停运', '镇管', '村管'];
+    var area_points = [{
+            "lon": 120.8994,
+            "lat": 30.9117,
+            "name": "嘉善县",
+            "deviceCount": 0
+        },
+        {
+            "lon": 121.1064,
+            "lat": 30.7120,
+            "name": "平湖市",
+            "deviceCount": 0
+        },
+        {
+            "lon": 120.8359,
+            "lat": 30.7129,
+            "name": "南湖区",
+            "deviceCount": 0
+        },
+        {
+            "lon": 120.8726,
+            "lat": 30.5179,
+            "name": "海盐县",
+            "deviceCount": 0
+        },
+        {
+            "lon": 120.6659,
+            "lat": 30.4676,
+            "name": "海宁市",
+            "deviceCount": 0
+        },
+        {
+            "lon": 120.4850,
+            "lat": 30.6137,
+            "name": "桐乡市",
+            "deviceCount": 0
+        },
+        {
+            "lon": 120.6608,
+            "lat": 30.8011,
+            "name": "秀洲区",
+            "deviceCount": 0
+        }
+    ]
+
+    var town_point = []
+    var town_polygon = {}
+
+    var map = new maptalks.Map('map', {
+        center: [120.75, 30.75],
+        zoom: 11,
+        baseLayer: new maptalks.GroupTileLayer('Base TileLayer',
+            [
+                new maptalks.TileLayer('天地图矢量', {
+                    urlTemplate: 'http://t{s}.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=09bc6c732106a74502eeff866ea86b7c',
+                    subdomains: ['1', '2', '3', '4', '5', '6', '7']
+                }),
+                new maptalks.TileLayer('天地图遥感', {
+                    urlTemplate: 'http://t{s}.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=09bc6c732106a74502eeff866ea86b7c',
+                    subdomains: ['1', '2', '3', '4', '5', '6', '7'],
+                    'visible': false
+                })
+
+            ]),
+        layers: [
+            new maptalks.TileLayer('天地图标注', {
+                urlTemplate: 'http://t{s}.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=09bc6c732106a74502eeff866ea86b7c',
+                subdomains: ['1', '2', '3', '4', '5', '6', '7']
+            }),
+            new maptalks.VectorLayer('temp'),
+            new maptalks.VectorLayer('county'),
+            new maptalks.VectorLayer('town', { 'visible': false }),
+            new maptalks.VectorLayer('污水处理设施', { 'visible': false }),
+            new maptalks.VectorLayer('水质监测断面', { 'visible': false }),
+            new maptalks.VectorLayer('自动水质站', { 'visible': false }),
+            new maptalks.VectorLayer('净水厂', { 'visible': false }),
+            new maptalks.VectorLayer('污水厂', { 'visible': false })
+        ],
+        attribution: false,
+        zoomControl: true, // add zoom control
+        scaleControl: true, // add scale control
+        layerSwitcherControl: {
+            'position': 'bottom-left',
+            // title of base layers
+            'baseTitle': '底图',
+            // title of layers
+            'overlayTitle': '业务图层',
+            // layers you don't want to manage with layer switcher
+            'excludeLayers': ['天地图标注', 'temp', 'county', 'town'],
+            // css class of container element, maptalks-layer-switcher by default
+            'containerClass': 'maptalks-layer-switcher'
+        },
+    });
+
+    map.on('zoomend', function(event) {
+        console.log('zoomend', event)
+        if (event.to < 13) {
+            map.getLayer('county').show()
+            map.getLayer('town').hide()
+            map.getLayer('污水处理设施').hide()
+        }
+        if (event.to >= 13 && event.to < 14) {
+            map.getLayer('county').hide()
+            map.getLayer('town').show()
+            map.getLayer('污水处理设施').hide()
+        }
+        if (event.to >= 14) {
+            map.getLayer('county').hide()
+            map.getLayer('town').hide()
+            map.getLayer('污水处理设施').show()
+        }
+    })
+
+    var layer = map.getLayer('county');
+    var townlayer = map.getLayer('town');
+    var devicelayer = map.getLayer('污水处理设施');
+    var water_section_layer = map.getLayer('水质监测断面');
+    var water_quality_autostation_layer = map.getLayer('自动水质站');
+    var purification_plant_layer = map.getLayer('净水厂');
+    var sewage_plant_layer = map.getLayer('污水厂');
+    var area_ploygon_dict = {};
+    var town_ploygon_dict = {};
+
+
+
+    $.get('http://47.92.102.84:8000/api/common/WaterSection', function(water_section_array) {
+        console.log("water_section_array is ", water_section_array)
+        water_section_array.forEach(function(water_section) {
+            //console.log("xy is",[Number(water_section.longitude), Number(water_section.latitude)])
+            var marker = new maptalks.Marker([Number(water_section.longitude), Number(water_section.latitude)], {
+                'id': water_section.id,
+                'symbol': [{
+                        'markerType': 'ellipse',
+                        'markerFill': 'rgba(171, 245, 192, 0.9)',
+                        'markerFillOpacity': 1,
+                        'markerLineColor': 'white',
+                        'markerLineWidth': 1,
+                        'markerLineOpacity': 1,
+                        'markerLineDasharray': [],
+                        'markerWidth': 30,
+                        'markerHeight': 30,
+                        'markerDx': 0,
+                        'markerDy': 0,
+                        'markerOpacity': 1
+                    },
+                    {
+                        'textFaceName': 'sans-serif',
+                        'textName': '{section_name}',
+                        'textFill': 'black',
+                        'textSize': 14,
+                        'textDy': 24
+                    }
+                ],
+                'properties': water_section
+            });
+
+            // marker.on('click',function(e){
+            //     console.log('clicked')
+            // })
+            marker.addTo(water_section_layer)
+            marker.setInfoWindow({
+                'title': water_section.section_name,
+                'content': '编码：' + water_section.id + '<br>' +
+                    '所属区：' + water_section.county  + '<br>' +
+                    '控制级别：' + water_section.control_level + '<br>'  +
+                    '水系：' +water_section.water_system+ '<br>'
+                    
+                // 'autoPan': true,
+                // 'width': 300,
+                // 'minHeight': 120,
+                // 'custom': false,
+                //'autoOpenOn' : 'click',  //set to null if not to open when clicking on marker
+                //'autoCloseOn' : 'click'
+            });
+        })
+
+    })
+
+
+    $.get('http://47.92.102.84:8000/api/common/WaterQualityAutoStation', function(water_section_array) {
+        console.log("water_section_array is ", water_section_array)
+        water_section_array.forEach(function(water_section) {
+            //console.log("xy is",[Number(water_section.longitude), Number(water_section.latitude)])
+            var marker = new maptalks.Marker([Number(water_section.longitude), Number(water_section.latitude)], {
+                'id': water_section.id,
+                'symbol': [{
+                        'markerType': 'ellipse',
+                        'markerFill': 'rgba(255, 148, 180, 0.9)',
+                        'markerFillOpacity': 1,
+                        'markerLineColor': 'white',
+                        'markerLineWidth': 1,
+                        'markerLineOpacity': 1,
+                        'markerLineDasharray': [],
+                        'markerWidth': 30,
+                        'markerHeight': 30,
+                        'markerDx': 0,
+                        'markerDy': 0,
+                        'markerOpacity': 1
+                    },
+                    {
+                        'textFaceName': 'sans-serif',
+                        'textName': '{section_name}',
+                        'textFill': 'black',
+                        'textSize': 14,
+                        'textDy': 24
+                    }
+                ],
+                'properties': water_section
+            });
+
+            // marker.on('click',function(e){
+            //     console.log('clicked')
+            // })
+            marker.addTo(water_quality_autostation_layer)
+            marker.setInfoWindow({
+                'title': water_section.section_name,
+                'content': '编码：' + water_section.id + '<br>' +
+                    '所属区：' + water_section.county  + '<br>' +
+                    '控制级别：' + water_section.control_level +'<br>' +
+                    '水系：' +water_section.water_system+ '<br>'
+                    
+                // 'autoPan': true,
+                // 'width': 300,
+                // 'minHeight': 120,
+                // 'custom': false,
+                //'autoOpenOn' : 'click',  //set to null if not to open when clicking on marker
+                //'autoCloseOn' : 'click'
+            });
+        })
+
+    })
+
+    $.get('http://47.92.102.84:8000/api/common/SewagePlantInfo', function(sewage_plant_array) {
+        console.log("sewage_plant_array is ", sewage_plant_array)
+        sewage_plant_array.forEach(function(water_section) {
+            //console.log("xy is",[Number(water_section.longitude), Number(water_section.latitude)])
+            var marker = new maptalks.Marker([Number(water_section.longitude), Number(water_section.latitude)], {
+                'id': water_section.id,
+                'symbol': [{
+                        'markerType': 'ellipse',
+                        'markerFill': 'rgba(255, 183, 0, 0.9)',
+                        'markerFillOpacity': 1,
+                        'markerLineColor': 'white',
+                        'markerLineWidth': 1,
+                        'markerLineOpacity': 1,
+                        'markerLineDasharray': [],
+                        'markerWidth': 30,
+                        'markerHeight': 30,
+                        'markerDx': 0,
+                        'markerDy': 0,
+                        'markerOpacity': 1
+                    },
+                    {
+                        'textFaceName': 'sans-serif',
+                        'textName': '{sewage_name}',
+                        'textFill': 'black',
+                        'textSize': 14,
+                        'textDy': 24
+                    }
+                ],
+                'properties': water_section
+            });
+
+            // marker.on('click',function(e){
+            //     console.log('clicked')
+            // })
+            marker.addTo(sewage_plant_layer)
+            marker.setInfoWindow({
+                'title': water_section.sewage_name,
+                'content': '编码：' + water_section.sewage_number + '<br>' +
+                    '所属区：' + water_section.city+water_section.county  + '<br>' +
+                    '地址：' + water_section.address  + '<br>' +
+                    
+                    '在线监测：' +water_section.online_fm+ '<br>'
+                    
+                // 'autoPan': true,
+                // 'width': 300,
+                // 'minHeight': 120,
+                // 'custom': false,
+                //'autoOpenOn' : 'click',  //set to null if not to open when clicking on marker
+                //'autoCloseOn' : 'click'
+            });
+        })
+
+    })
+
+    // $.get('http://47.92.102.84:8000/api/common/WaterQualityAutoStation', function(water_section_array) {
+    //     console.log("water_section_array is ", water_section_array)
+    //     water_section_array.forEach(function(water_section) {
+    //         //console.log("xy is",[Number(water_section.longitude), Number(water_section.latitude)])
+    //         var marker = new maptalks.Marker([Number(water_section.longitude), Number(water_section.latitude)], {
+    //             'id': water_section.id,
+    //             'symbol': [{
+    //                     'markerType': 'ellipse',
+    //                     'markerFill': 'rgba(255, 148, 180, 0.9)',
+    //                     'markerFillOpacity': 1,
+    //                     'markerLineColor': 'white',
+    //                     'markerLineWidth': 1,
+    //                     'markerLineOpacity': 1,
+    //                     'markerLineDasharray': [],
+    //                     'markerWidth': 30,
+    //                     'markerHeight': 30,
+    //                     'markerDx': 0,
+    //                     'markerDy': 0,
+    //                     'markerOpacity': 1
+    //                 },
+    //                 {
+    //                     'textFaceName': 'sans-serif',
+    //                     'textName': '{section_name}',
+    //                     'textFill': 'black',
+    //                     'textSize': 14,
+    //                     'textDy': 24
+    //                 }
+    //             ],
+    //             'properties': water_section
+    //         });
+
+    //         // marker.on('click',function(e){
+    //         //     console.log('clicked')
+    //         // })
+    //         marker.addTo(water_quality_autostation_layer)
+    //         marker.setInfoWindow({
+    //             'title': water_section.section_name,
+    //             'content': '编码：' + water_section.id + '<br>' +
+    //                 '所属区：' + water_section.county  + '<br>' +
+    //                 '控制级别：' + water_section.control_level  +
+    //                 '水系：' +water_section.water_system+ '<br>'
+                    
+    //             // 'autoPan': true,
+    //             // 'width': 300,
+    //             // 'minHeight': 120,
+    //             // 'custom': false,
+    //             //'autoOpenOn' : 'click',  //set to null if not to open when clicking on marker
+    //             //'autoCloseOn' : 'click'
+    //         });
+    //     })
+
+    // })
+
+
+    $.get('/api/common/DeviceInfo', function(device_array) {
+        console.log(device_array);
+        this.devicestates = device_array;
+
+        $.get('/datas/jiaxingxianjie.json', function(area_ploygon) {
+            $.get('/datas/xiangzheng_points.geojson', function(xianzheng) {
+                $.get('/datas/jiaxingxiangzhenjie.json', function(xianzhengjie) {
+                    var temp_layer = map.getLayer('temp');
+                    area_ploygon_array = maptalks.GeoJSON.toGeometry(area_ploygon);
+                    area_ploygon_array.forEach(ap => area_ploygon_dict[ap.properties.NAME] = ap);
+
+                    xianzheng_point_array = maptalks.GeoJSON.toGeometry(xianzheng);
+                    xianzhengjie_array = maptalks.GeoJSON.toGeometry(xianzhengjie);
+                    xianzhengjie_array.forEach(xp => town_ploygon_dict[xp.properties['NAME']] = xp);
+                    xianzheng_point_array.forEach(xp => xp.properties['deviceCount'] = 0);
+                    // console.log('area_ploygon_dict is', area_ploygon_dict)
+                    device_array.forEach(function(device) {
+                        finded_device = area_points.find(x => x.name == device.county)
+                        finded_xianzheng_point = xianzheng_point_array.find(x => x.properties['NAME'] == device.town)
+                        if (finded_device)
+                            finded_device.deviceCount++
+                        if (finded_xianzheng_point)
+                            finded_xianzheng_point.properties['deviceCount']++
+                    })
+                    // console.log('area_points', area_points)
+                    console.log('xianzheng_point_array', xianzheng_point_array)
+                    console.log('town_ploygon_dict', town_ploygon_dict)
+
+
+
+
+                    for (index in area_points) {
+                        point = area_points[index];
+                        var marker = new maptalks.Marker([point.lon, point.lat], {
+                            'id': point.name,
+                            'symbol': [{
+                                    'markerType': 'ellipse',
+                                    'markerFill': 'rgba(60, 153, 254, 0.9)',
+                                    'markerFillOpacity': 1,
+                                    'markerLineColor': 'white',
+                                    'markerLineWidth': 1,
+                                    'markerLineOpacity': 1,
+                                    'markerLineDasharray': [],
+                                    'markerWidth': 90,
+                                    'markerHeight': 90,
+                                    'markerDx': 0,
+                                    'markerDy': 0,
+                                    'markerOpacity': 1
+                                },
+                                {
+                                    'textFaceName': 'sans-serif',
+                                    'textName': '{name}\r\n共{deviceCount}个设施',
+                                    'textFill': 'white',
+                                    'textSize': 14,
+                                    'textDy': 0
+                                }
+                            ],
+                            'properties': point
+                        })
+                        marker.on('mouseenter', function(e) {
+                            //update markerFill to highlight
+                            e.target.updateSymbol({
+                                'markerFill': '#e05766',
+                                'markerWidth': 100,
+                                'markerHeight': 100,
+                                'textSize': 15
+                            });
+                            console.log(e.target.getId())
+                            area_ploygon_dict[e.target.getId()].setSymbol({
+                                'polygonFill': 'rgb(60, 153, 254)',
+                                'polygonOpacity': 0.3,
+                                'lineColor': 'rgb(60, 153, 254)',
+                                'lineWidth': 1,
+                                'lineJoin': 'round', //miter, round, bevel
+                                'lineCap': 'round', //butt, round, square
+                                'lineDasharray': null, //dasharray, e.g. [10, 5, 5]
+                                'lineOpacity ': 1
+                            })
+                            area_ploygon_dict[e.target.getId()].addTo(temp_layer)
+                        }).on('mouseout', function(e) {
+                            //reset color
+                            e.target.updateSymbol({
+                                'markerFill': 'rgba(60, 153, 254, 0.9)',
+                                'markerWidth': 90,
+                                'markerHeight': 90,
+                                'textSize': 14
+                            });
+                            console.log('e.id', e.target.getId())
+                            temp_layer.removeGeometry(area_ploygon_dict[e.target.getId()])
+                        }).on('click', function(e) {
+                            console.log(e)
+
+                            temp_layer.removeGeometry(area_ploygon_dict[e.target.getId()])
+                            map.getLayer('county').hide()
+                            map.animateTo({
+                                zoom: 13,
+                                center: e.coordinate,
+                                // pitch: 30,
+                                // bearing: 60
+                            }, {
+                                duration: 500,
+                                easing: 'out'
+                            }, function(frame) {
+                                if (frame.state.playState === 'finished') {
+                                    console.log('animation finished');
+                                }
+                            });
+                        })
+                        marker.addTo(layer);
+                    }
+
+
+                    device_array.forEach(function(device) {
+                        var marker = new maptalks.Marker([device.logitude, device.latitude], {
+                            'id': device.code,
+                            'symbol': [{
+                                    'markerType': 'ellipse',
+                                    'markerFill': 'rgba(60, 153, 254, 0.9)',
+                                    'markerFillOpacity': 1,
+                                    'markerLineColor': 'white',
+                                    'markerLineWidth': 1,
+                                    'markerLineOpacity': 1,
+                                    'markerLineDasharray': [],
+                                    'markerWidth': 30,
+                                    'markerHeight': 30,
+                                    'markerDx': 0,
+                                    'markerDy': 0,
+                                    'markerOpacity': 1
+                                },
+                                {
+                                    'textFaceName': 'sans-serif',
+                                    'textName': '{name}',
+                                    'textFill': 'black',
+                                    'textSize': 14,
+                                    'textDy': 24
+                                }
+                            ],
+                            'properties': device
+                        });
+
+                        // marker.on('click',function(e){
+                        //     console.log('clicked')
+                        // })
+                        marker.addTo(devicelayer)
+                        marker.setInfoWindow({
+                            'title': device.name,
+                            'content': '设施编码：' + device.code + '<br>' +
+                                '所属区镇村：' + device.county + device.town + device.village_name + '<br>' +
+                                '设计日处理：' + device.daily_capacity + '吨<br>' +
+                                '带在线监测：' + (device.online_fm == '1' ? '是' : '否') + '<br>' +
+                                '带远程监控：' + (device.online_vm == '1' ? '是' : '否') + '<br>' +
+                                '设施处理工艺：' + device.technology_desc + '<br>' +
+                                '设计出水水质标准：' + device.water_standard + '<br>' +
+                                '设施状态：' + sheshi_state[parseInt(device.status) - 1] + '<br>' +
+                                '<div style="float:right"><a href="/device_info.html?code=' + device.code + '" target="_blank">查看详情</a></div>'
+                            // 'autoPan': true,
+                            // 'width': 300,
+                            // 'minHeight': 120,
+                            // 'custom': false,
+                            //'autoOpenOn' : 'click',  //set to null if not to open when clicking on marker
+                            //'autoCloseOn' : 'click'
+                        });
+                    })
+
+
+
+                    for (index in xianzheng_point_array) {
+                        xz_point = xianzheng_point_array[index]
+                        var marker = xz_point.setSymbol([{
+                                'markerType': 'ellipse',
+                                'markerFill': 'rgba(60, 153, 254, 0.9)',
+                                'markerFillOpacity': 1,
+                                'markerLineColor': 'white',
+                                'markerLineWidth': 1,
+                                'markerLineOpacity': 1,
+                                'markerLineDasharray': [],
+                                'markerWidth': 90,
+                                'markerHeight': 90,
+                                'markerDx': 0,
+                                'markerDy': 0,
+                                'markerOpacity': 1
+                            },
+                            {
+                                'textFaceName': 'sans-serif',
+                                'textName': '{NAME}\r\n共{deviceCount}个设施',
+                                'textFill': 'white',
+                                'textSize': 14,
+                                'textDy': 0
+                            }
+                        ])
+
+                        marker.on('mouseenter', function(e) {
+                            //update markerFill to highlight
+                            e.target.updateSymbol({
+                                'markerFill': '#e05766',
+                                'markerWidth': 100,
+                                'markerHeight': 100,
+                                'textSize': 15
+                            });
+                            console.log('mouse move in', e)
+                            town_ploygon_dict[e.target.properties.NAME].setSymbol({
+                                'polygonFill': 'rgb(60, 153, 254)',
+                                'polygonOpacity': 0.3,
+                                'lineColor': 'rgb(60, 153, 254)',
+                                'lineWidth': 1,
+                                'lineJoin': 'round', //miter, round, bevel
+                                'lineCap': 'round', //butt, round, square
+                                'lineDasharray': null, //dasharray, e.g. [10, 5, 5]
+                                'lineOpacity ': 1
+                            })
+                            town_ploygon_dict[e.target.properties.NAME].addTo(temp_layer)
+                        }).on('mouseout', function(e) {
+                            //reset color
+                            e.target.updateSymbol({
+                                'markerFill': 'rgba(60, 153, 254, 0.9)',
+                                'markerWidth': 90,
+                                'markerHeight': 90,
+                                'textSize': 14
+                            });
+                            console.log('e.id', e.target.getId())
+                            temp_layer.removeGeometry(town_ploygon_dict[e.target.properties.NAME])
+                        }).on('click', function(e) {
+                            console.log(e)
+
+                            temp_layer.removeGeometry(town_ploygon_dict[e.target.properties.NAME])
+                            map.getLayer('town').hide()
+                            map.animateTo({
+                                zoom: 14,
+                                center: e.coordinate,
+                                // pitch: 30,
+                                // bearing: 60
+                            }, {
+                                duration: 500,
+                                easing: 'out'
+                            }, function(frame) {
+                                if (frame.state.playState === 'finished') {
+                                    console.log('animation finished');
+                                }
+                            });
+                        });
+                        marker.addTo(townlayer);
+                    }
+
+                })
+            })
+        });
+    });
+
+
+
+
+
+    function getColor(code) {
+        if (error_array.indexOf(code) > -1) {
+            return 'red'
+        } else {
+            return 'rgb(135,196,240)'
+        }
+    }
+    </script>
+</body>
+
+</html>

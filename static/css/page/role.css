@@ -1,0 +1,25 @@
+#iframeControl{
+    width: 100%;
+    height: 500px;
+    border: #1d2124;
+    border-radius: 4px;
+}
+.base-header{
+    height: 60px;
+    background-color: #e0ffff
+}
+.right-header{
+    float: right;
+    margin: 17px 0;
+}
+.title-text{
+    padding:20px;
+    font-size:20px;
+    float:left
+}
+.iframe-table{
+    margin: 5px 0;
+}
+.getElementRow .el-input{
+    width: 240px;
+}/*form输入框统一样式*/
